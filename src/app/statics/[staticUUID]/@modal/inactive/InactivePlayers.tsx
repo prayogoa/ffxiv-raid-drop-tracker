@@ -1,4 +1,5 @@
 "use client";
+import { useEffect } from "react";
 import { Player, PlayerStatic } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -11,7 +12,6 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { useEffect } from "react";
 
 export function InactivePlayers({
   staticUUID,

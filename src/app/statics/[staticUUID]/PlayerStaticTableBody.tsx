@@ -177,7 +177,7 @@ export function PlayerRow({
   });
   const onClickDelete = useCallback(() => {
     mutateAsync(playerId);
-  }, [playerId]);
+  }, [mutateAsync, playerId]);
   return (
     <TableRow className="grid grid-cols-[repeat(2,1fr_min-content)] xl:table-row">
       <TableCell className="col-span-2 row-start-1 block xl:table-cell">

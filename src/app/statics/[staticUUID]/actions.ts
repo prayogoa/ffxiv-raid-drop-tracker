@@ -1,10 +1,10 @@
 "use server";
 import { cache } from "react";
 import { Player, PlayerGearChoice, PlayerStatic, Prisma } from "@prisma/client";
+import { revalidatePath } from "next/cache";
+import { createPlayerFormValidator } from "./validators";
 import { prisma as prismaClient } from "@/lib/prismaClient";
 import { sendBroadcastMessage } from "@/lib/supabase";
-import { createPlayerFormValidator } from "./validators";
-import { revalidatePath } from "next/cache";
 
 export const getPlayerListForStatic = cache(
   async (staticUUID: PlayerStatic["slug"]) => {

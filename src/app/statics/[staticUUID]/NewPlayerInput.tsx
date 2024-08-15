@@ -6,6 +6,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createPlayer } from "./actions";
+import { createPlayerFormValidator } from "./validators";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TableCell, TableRow } from "@/components/ui/table";
@@ -18,7 +19,6 @@ import {
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
-import { createPlayerFormValidator } from "./validators";
 
 export function NewPlayerInput({
   staticUUID,

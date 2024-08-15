@@ -1,9 +1,9 @@
 "use server";
 import { cache } from "react";
 import { PlayerStatic, Player } from "@prisma/client";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prismaClient";
 import { sendBroadcastMessage } from "@/lib/supabase";
-import { revalidatePath } from "next/cache";
 
 export const getInactivePlayersForStatic = cache(
   async function getInactivePlayersForStatic(staticUUID: PlayerStatic["slug"]) {
