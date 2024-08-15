@@ -1,4 +1,3 @@
-export const dynamice = "force-dynamic";
 import { PlayerStatic } from "@prisma/client";
 import {
   QueryClient,
