@@ -1,0 +1,75 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  Tank
+  Healer
+  Dps
+}
+
+model Player {
+  id   Int    @id @default(autoincrement())
+  name String
+  role Role
+  playerGearChoice PlayerGearChoice?
+  staticId Int
+  static  PlayerStatic @relation(fields: [staticId], references: [id], onUpdate: Cascade)
+
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  deletedAt        DateTime?
+
+  @@unique([name, staticId])
+}
+
+enum GearType {
+  Raid
+  Tome
+  Crafted
+}
+
+model PlayerGearChoice {
+  id               Int       @id @default(autoincrement())
+  playerId         Int       @unique
+  Player           Player    @relation(fields: [playerId], references: [id])
+  weapon           GearType?
+  weaponObtained   Boolean   @default(false)
+  head             GearType?
+  headObtained     Boolean   @default(false)
+  chest            GearType?
+  chestObtained    Boolean   @default(false)
+  hands            GearType?
+  handsObtained    Boolean   @default(false)
+  legs             GearType?
+  legsObtained      Boolean   @default(false)
+  feet             GearType?
+  feetObtained     Boolean   @default(false)
+  earring          GearType?
+  earringObtained  Boolean   @default(false)
+  necklace         GearType?
+  necklaceObtained Boolean   @default(false)
+  bracelet         GearType?
+  braceletObtained Boolean   @default(false)
+  ring1            GearType?
+  ring1Obtained    Boolean   @default(false)
+  ring2            GearType?
+  ring2Obtained    Boolean   @default(false)
+}
+
+model PlayerStatic {
+  id  Int @id @default(autoincrement())
+  slug  String @unique @default(uuid())
+  name String
+  players Player[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  deletedAt DateTime?
+}
