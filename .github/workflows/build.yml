@@ -41,7 +41,7 @@ jobs:
         with:
           cache: "npm"
       - run: npm ci
-      - run: prisma migrate deploy
+      - run: npm run migrate
   deploy:
     runs-on: ubuntu-latest
     environment: production
