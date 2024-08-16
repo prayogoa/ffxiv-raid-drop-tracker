@@ -9,7 +9,7 @@ env:
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    environment: production
     steps:
       - uses: actions/checkout@v4
       - name: Install asdf
@@ -27,6 +27,7 @@ jobs:
       - run: npm run build:vercel -- --prod --token=${{ secrets.VERCEL_TOKEN }}
   migrate:
     runs-on: ubuntu-latest
+    environment: production
     needs: build
     if: ${{ github.ref_name  }} == 'main'
     steps:
@@ -43,6 +44,7 @@ jobs:
       - run: prisma migrate deploy
   deploy:
     runs-on: ubuntu-latest
+    environment: production
     needs: migrate
     if: ${{ github.ref_name  }} == 'main'
     steps:
