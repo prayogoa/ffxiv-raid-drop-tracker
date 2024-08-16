@@ -44,6 +44,7 @@ jobs:
       - run: npm run migrate
         env:
           DIRECT_URL: ${{ secrets.DIRECT_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
   deploy:
     runs-on: ubuntu-latest
     environment: production
