@@ -14,8 +14,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install asdf
         uses: asdf-vm/actions/setup@v3
-      - run: asdf install nodejs
-      - run: asdf install direnv
+      - run: |
+          asdf plugin add nodejs
+          asdf install nodejs
       - uses: actions/setup-node@v4
         with:
           cache: "npm"
@@ -32,8 +33,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install asdf
         uses: asdf-vm/actions/setup@v3
-      - run: asdf install nodejs
-      - run: asdf install direnv
+      - run: |
+          asdf plugin add nodejs
+          asdf install nodejs
       - uses: actions/setup-node@v4
         with:
           cache: "npm"
@@ -47,8 +49,9 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install asdf
         uses: asdf-vm/actions/setup@v3
-      - run: asdf install nodejs
-      - run: asdf install direnv
+      - run: |
+          asdf plugin add nodejs
+          asdf install nodejs
       - uses: actions/setup-node@v4
         with:
           cache: "npm"
