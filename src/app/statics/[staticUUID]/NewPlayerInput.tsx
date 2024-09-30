@@ -88,8 +88,10 @@ export function NewPlayerInput({
     <>
       {optimisticData && (
         <TableRow>
-          <TableCell>{optimisticData.name}</TableCell>
-          <TableCell>{optimisticData.role}</TableCell>
+          <TableCell className="text-center">{optimisticData.name}</TableCell>
+          <TableCell>
+            <div className="px-3 py-2">{optimisticData.role}</div>
+          </TableCell>
         </TableRow>
       )}
       <Form {...form}>
