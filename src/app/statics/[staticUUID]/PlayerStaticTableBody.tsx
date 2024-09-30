@@ -3,14 +3,7 @@
 import { useCallback, useState } from "react";
 import { PlayerStatic, Player, PrismaClient } from "@prisma/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-  CheckIcon,
-  XMarkIcon,
-  PencilSquareIcon,
-} from "@heroicons/react/16/solid";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { XMarkIcon } from "@heroicons/react/16/solid";
 import { NewPlayerInput } from "./NewPlayerInput";
 import {
   getPlayerListForStatic,
@@ -19,124 +12,11 @@ import {
   deletePlayer,
 } from "./actions";
 import { GearChoiceCells } from "./GearChoiceCells";
+import { PlayerNameCell } from "./PlayerNameCell";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Form, FormField, FormControl, FormItem } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useToast } from "@/components/ui/use-toast";
 
-const formSchema = z.object({
-  name: z.string().min(1),
-});
-
-function PlayerNameEdit({
-  playerId,
-  name,
-  onClose,
-}: {
-  playerId: Player["id"];
-  name: Player["name"];
-  onClose: () => void;
-}) {
-  const { toast } = useToast();
-  const queryClient = useQueryClient();
-  const { mutateAsync } = useMutation({
-    mutationFn: (values: Parameters<typeof updatePlayer>[1]) =>
-      updatePlayer(playerId, values),
-    onMutate: async (newValues) => {
-      const queryKey = [{ scope: "Player", playerId }] as const;
-      await queryClient.cancelQueries({ queryKey: queryKey });
-      const previous = queryClient.getQueryData<Player>(queryKey);
-      queryClient.setQueryData(queryKey, { ...previous, newValues });
-      return { previous, playerId };
-    },
-    onError: (err, newValues, context) => {
-      context &&
-        queryClient.setQueryData(
-          [{ scope: "Player", playerId: context.playerId }],
-          context.previous,
-        );
-    },
-    onSettled: (_0, _1, _2, context) => {
-      context &&
-        queryClient.invalidateQueries({
-          queryKey: [{ scope: "Player", playerId: context.playerId }],
-        });
-    },
-  });
-
-  const form = useForm({
-    resolver: zodResolver(formSchema),
-    defaultValues: { name },
-  });
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    updatePlayer(playerId, values).then(onClose);
-  }
-  function onInvalid() {
-    toast({
-      description: "Name can't be empty",
-      variant: "destructive",
-    });
-  }
-
-  return (
-    <Form {...form}>
-      <form
-        className="flex w-full items-center"
-        onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-      >
-        <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem className="grow">
-              <FormControl>
-                <Input {...field} autoFocus />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <Button type="submit" size="icon" className="mx-2" variant="outline">
-          <CheckIcon className="size-4" />
-        </Button>
-        <Button type="button" size="icon" variant="outline" onClick={onClose}>
-          <XMarkIcon className="size-4" />
-        </Button>
-      </form>
-    </Form>
-  );
-}
-
-function PlayerName({
-  playerId,
-  name,
-}: {
-  playerId: Player["id"];
-  name: Player["name"];
-}) {
-  const [isEditing, setIsEditing] = useState(false);
-  return isEditing ? (
-    <PlayerNameEdit
-      name={name}
-      playerId={playerId}
-      onClose={() => setIsEditing(false)}
-    />
-  ) : (
-    <div className="group flex w-full flex-row items-center">
-      <span className="block grow px-3 py-2 text-center">{name}</span>
-      <Button
-        variant="ghost"
-        size="icon"
-        className="invisible ms-auto cursor-pointer p-1 group-hover:visible"
-        onClick={() => setIsEditing(true)}
-      >
-        <PencilSquareIcon className="h-4 w-4" />
-      </Button>
-    </div>
-  );
-}
 export function PlayerRow({
   playerId,
   staticUUID,
@@ -180,13 +60,7 @@ export function PlayerRow({
   }, [mutateAsync, playerId]);
   return (
     <TableRow className="grid grid-cols-[repeat(2,1fr_min-content)] xl:table-row">
-      <TableCell className="col-span-2 row-start-1 block xl:table-cell">
-        {player?.name ? (
-          <PlayerName name={player.name} playerId={playerId} />
-        ) : (
-          <Skeleton className="h-4" />
-        )}
-      </TableCell>
+      <PlayerNameCell player={player} />
       <TableCell className="row-start1 col-span-1 block xl:table-cell">
         <div className="px-3 py-2">
           {player?.role || <Skeleton className="h-4" />}
