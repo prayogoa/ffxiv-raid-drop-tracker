@@ -65,7 +65,7 @@ function PlayerNameEdit({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    updatePlayer(playerId, values).then(onClose);
+    mutateAsync(values).then(onClose);
   }
   function onInvalid() {
     toast({
