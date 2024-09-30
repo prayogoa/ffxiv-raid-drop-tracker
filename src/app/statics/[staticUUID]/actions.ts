@@ -63,13 +63,14 @@ export async function createPlayer(
       "PlayerStaticUpdated",
       playerStatic,
     );
-    return player;
+    return { data: player };
   } catch (err) {
     if (err instanceof Prisma.PrismaClientKnownRequestError) {
       if (err.code === "P2002") {
+        return { error: "Player name already exists" };
       }
     }
-    throw err;
+    return { error: "Could not create player" };
   }
 }
 

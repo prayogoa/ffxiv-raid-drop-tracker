@@ -1,6 +1,6 @@
 "use client";
 import { Role, PlayerStatic, Player } from "@prisma/client";
-import { useRef, useCallback, useOptimistic, useTransition } from "react";
+import { useId } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -25,13 +25,8 @@ export function NewPlayerInput({
 }: {
   staticUUID: PlayerStatic["slug"];
 }) {
-  const [_, startTransition] = useTransition();
-  const [optimisticData, setOptimisticData] = useOptimistic<{
-    name: string;
-    role: string;
-  } | null>(null);
   const queryClient = useQueryClient();
-  const { mutateAsync } = useMutation({
+  const { mutate, isPending, variables } = useMutation({
     mutationFn: async ({
       name,
       role,
@@ -41,17 +36,23 @@ export function NewPlayerInput({
       role: Role;
       staticUUID: PlayerStatic["slug"];
     }) => {
-      startTransition(() => setOptimisticData({ name, role }));
-      try {
-        const player = await createPlayer(name, role, staticUUID);
-        console.log(player);
-        return player;
-      } catch (err) {
-        console.log(err);
-        throw err;
+      const { data: player, error } = await createPlayer(
+        name,
+        role,
+        staticUUID,
+      );
+      if (!!error) {
+        throw new Error(error);
       }
+      return player;
     },
-    onSettled: (newPlayer, _1, { staticUUID }, context) => {
+    onError: (err) => {
+      toast({
+        description: err.message,
+        variant: "destructive",
+      });
+    },
+    onSuccess: (newPlayer, { staticUUID }, context) => {
       queryClient.invalidateQueries({
         queryKey: [{ scope: "PlayerList", staticUUID }],
       });
@@ -63,17 +64,14 @@ export function NewPlayerInput({
       }
     },
   });
-  const formRef = useRef<HTMLFormElement>(null);
+  const formId = useId();
   const form = useForm<z.infer<typeof createPlayerFormValidator>>({
     resolver: zodResolver(createPlayerFormValidator),
     defaultValues: { name: "", role: "Tank" },
   });
 
-  async function onSubmit({
-    name,
-    role,
-  }: z.infer<typeof createPlayerFormValidator>) {
-    mutateAsync({ name, role: role as Role, staticUUID });
+  function onSubmit({ name, role }: z.infer<typeof createPlayerFormValidator>) {
+    mutate({ name, role, staticUUID });
   }
   function onInvalid() {
     toast({
@@ -81,26 +79,20 @@ export function NewPlayerInput({
       variant: "destructive",
     });
   }
-  const onClickAdd = useCallback(() => {
-    formRef.current?.requestSubmit();
-  }, []);
   return (
     <>
-      {optimisticData && (
+      {isPending && (
         <TableRow>
-          <TableCell className="text-center">{optimisticData.name}</TableCell>
+          <TableCell className="text-center">{variables.name}</TableCell>
           <TableCell>
-            <div className="px-3 py-2">{optimisticData.role}</div>
+            <div className="px-3 py-2">{variables.role}</div>
           </TableCell>
         </TableRow>
       )}
       <Form {...form}>
         <TableRow>
           <TableCell>
-            <form
-              ref={formRef}
-              onSubmit={form.handleSubmit(onSubmit, onInvalid)}
-            >
+            <form onSubmit={form.handleSubmit(onSubmit, onInvalid)} id={formId}>
               <FormField
                 control={form.control}
                 name="name"
@@ -143,7 +135,12 @@ export function NewPlayerInput({
             />
           </TableCell>
           <TableCell>
-            <Button variant="ghost" onClick={onClickAdd}>
+            <Button
+              variant="ghost"
+              type="submit"
+              form={formId}
+              isLoading={isPending}
+            >
               +
             </Button>
           </TableCell>
