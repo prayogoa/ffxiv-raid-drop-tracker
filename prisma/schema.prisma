@@ -21,7 +21,7 @@ model Player {
   role Role
   playerGearChoice PlayerGearChoice?
   staticId Int
-  static  PlayerStatic @relation(fields: [staticId], references: [id], onUpdate: Cascade)
+  static  PlayerStatic @relation(fields: [staticId], references: [id], onUpdate: Cascade, onDelete: Cascade)
 
   createdAt        DateTime           @default(now())
   updatedAt        DateTime           @updatedAt
@@ -39,7 +39,7 @@ enum GearType {
 model PlayerGearChoice {
   id               Int       @id @default(autoincrement())
   playerId         Int       @unique
-  Player           Player    @relation(fields: [playerId], references: [id])
+  Player           Player    @relation(fields: [playerId], references: [id], onDelete: Cascade)
   weapon           GearType?
   weaponObtained   Boolean   @default(false)
   head             GearType?
