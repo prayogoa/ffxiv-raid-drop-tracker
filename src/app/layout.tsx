@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { ReactQueryProvider } from "@/lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
@@ -37,6 +37,7 @@ export default function RootLayout({
             {children}
             <Toaster />
           </ThemeProvider>
+          <ReactQueryDevtools />
         </ReactQueryProvider>
       </body>
     </html>
