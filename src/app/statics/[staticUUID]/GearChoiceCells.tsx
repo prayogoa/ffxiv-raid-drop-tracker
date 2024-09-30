@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const gearKeys = [
   "weapon",
@@ -35,7 +36,11 @@ export function GearChoiceCells({ playerId }: { playerId: Player["id"] }) {
     queryKey: [{ scope: "PlayerGearChoice", playerId }],
   });
   if (!playerGearChoice) {
-    return null;
+    return (
+      <TableCell colSpan={22}>
+        <Skeleton className="h-4" />
+      </TableCell>
+    );
   }
   return gearKeys.map((key) => (
     <GearCell
@@ -49,7 +54,7 @@ export function GearChoiceCells({ playerId }: { playerId: Player["id"] }) {
   ));
 }
 
-export const GearCell = ({
+const GearCell = ({
   playerId,
   partKey,
   obtainedKey,

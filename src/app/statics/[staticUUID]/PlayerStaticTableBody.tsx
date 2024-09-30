@@ -184,11 +184,13 @@ export function PlayerRow({
         {player?.name ? (
           <PlayerName name={player.name} playerId={playerId} />
         ) : (
-          <Skeleton />
+          <Skeleton className="h-4" />
         )}
       </TableCell>
       <TableCell className="row-start1 col-span-1 block xl:table-cell">
-        <div className="px-3 py-2">{player?.role || <Skeleton />}</div>
+        <div className="px-3 py-2">
+          {player?.role || <Skeleton className="h-4" />}
+        </div>
       </TableCell>
       <GearChoiceCells playerId={playerId} />
       <TableCell className="col-span-1 col-start-4 row-start-1 block xl:table-cell">
