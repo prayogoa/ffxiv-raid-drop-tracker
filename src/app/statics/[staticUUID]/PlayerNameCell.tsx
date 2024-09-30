@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { updatePlayer } from "./actions";
+import { GearImport } from "./GearImport";
 import { Button } from "@/components/ui/button";
 import { Form, FormField, FormControl, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -112,24 +113,28 @@ function PlayerNameCell({ player }: { player?: Player }) {
         onClose={() => setIsEditing(false)}
       />
     ) : (
-      <div className="group flex w-full flex-row items-center">
+      <>
         <span className="block grow px-3 py-2 text-center">{player.name}</span>
+        <GearImport
+          className="invisible ms-auto p-1 group-hover:visible"
+          player={player}
+        />
         <Button
           variant="ghost"
           size="icon"
-          className="invisible ms-auto cursor-pointer p-1 group-hover:visible"
+          className="invisible ms-1 p-1 group-hover:visible"
           onClick={() => setIsEditing(true)}
         >
           <PencilSquareIcon className="h-4 w-4" />
         </Button>
-      </div>
+      </>
     );
   } else {
   }
 
   return (
     <TableCell className="col-span-2 row-start-1 block xl:table-cell">
-      {content}
+      <div className="group flex w-full flex-row items-center">{content}</div>
     </TableCell>
   );
 }

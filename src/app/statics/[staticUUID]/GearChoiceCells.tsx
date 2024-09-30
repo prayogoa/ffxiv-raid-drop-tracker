@@ -15,20 +15,7 @@ import {
 } from "@/components/ui/select";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
-
-export const gearKeys = [
-  "weapon",
-  "head",
-  "chest",
-  "hands",
-  "legs",
-  "feet",
-  "earring",
-  "necklace",
-  "bracelet",
-  "ring1",
-  "ring2",
-] as const;
+import { gearKeys } from "@/lib/gearKeys";
 
 export function GearChoiceCells({ playerId }: { playerId: Player["id"] }) {
   const { data: playerGearChoice } = useQuery({
