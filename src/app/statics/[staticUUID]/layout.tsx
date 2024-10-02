@@ -25,11 +25,11 @@ export default function Layout({
             Inactive players
           </Link>
         </div>
-        <Table className="flex justify-center xl:table">
-          <TableHeader className="hidden xl:table-header-group">
+        <Table className="flex max-w-full justify-center 2xl:table">
+          <TableHeader className="hidden 2xl:table-header-group">
             <TableRow>
-              <TableHead className="w-96">Name</TableHead>
-              <TableHead className="min-w-36">Role</TableHead>
+              <TableHead>Name</TableHead>
+              <TableHead>Role</TableHead>
               <TableHead colSpan={2}>Weapon</TableHead>
               <TableHead colSpan={2}>Head</TableHead>
               <TableHead colSpan={2}>Chest</TableHead>
@@ -44,7 +44,7 @@ export default function Layout({
               <TableHead />
             </TableRow>
           </TableHeader>
-          <TableBody className="flex w-full flex-col xl:table-row-group">
+          <TableBody className="flex w-full flex-col 2xl:table-row-group">
             {children}
           </TableBody>
         </Table>

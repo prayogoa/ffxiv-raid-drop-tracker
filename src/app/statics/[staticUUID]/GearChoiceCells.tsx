@@ -93,8 +93,8 @@ const GearCell = ({
   );
   return (
     <Fragment key={partKey}>
-      <TableCell className="flex items-center justify-end xl:table-cell">
-        <Label className="mr-1 h-min xl:hidden">{partKey}:</Label>
+      <TableCell className="flex items-center justify-end 2xl:table-cell">
+        <Label className="mr-1 h-min 2xl:hidden">{partKey}:</Label>
         <Select
           name={partKey}
           value={selectedGear || "Raid"}
@@ -117,7 +117,7 @@ const GearCell = ({
           </SelectContent>
         </Select>
       </TableCell>
-      <TableCell className="flex w-fit items-center p-0 xl:table-cell">
+      <TableCell className="flex w-fit items-center p-0 2xl:table-cell">
         <Checkbox
           name={obtainedKey}
           checked={obtained}

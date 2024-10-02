@@ -9,6 +9,7 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
+import { updateGearChoice } from "../actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -28,7 +29,6 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { updateGearChoice } from "../actions";
 import {
   getJobItems,
   getSetData,
@@ -88,7 +88,7 @@ const GearImport = forwardRef<
       }}
     >
       <DialogTrigger asChild>
-        <Button ref={ref} className={className} variant="ghost" size="icon">
+        <Button ref={ref} className={className} variant="ghost">
           <ArrowDownOnSquareIcon className="h-4 w-4" />
         </Button>
       </DialogTrigger>

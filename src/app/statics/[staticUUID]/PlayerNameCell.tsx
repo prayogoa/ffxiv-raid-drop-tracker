@@ -91,10 +91,15 @@ function PlayerNameEdit({
             </FormItem>
           )}
         />
-        <Button type="submit" size="icon" className="mx-2" variant="outline">
+        <Button type="submit" className="mx-2 h-6 w-6" variant="outline">
           <CheckIcon className="size-4" />
         </Button>
-        <Button type="button" size="icon" variant="outline" onClick={onClose}>
+        <Button
+          type="button"
+          className="h-6 w-6"
+          variant="outline"
+          onClick={onClose}
+        >
           <XMarkIcon className="size-4" />
         </Button>
       </form>
@@ -116,13 +121,12 @@ function PlayerNameCell({ player }: { player?: Player }) {
       <>
         <span className="block grow px-3 py-2 text-center">{player.name}</span>
         <GearImport
-          className="invisible ms-auto p-1 group-hover:visible"
+          className="invisible ms-auto h-6 w-6 p-1 group-hover:visible"
           player={player}
         />
         <Button
           variant="ghost"
-          size="icon"
-          className="invisible ms-1 p-1 group-hover:visible"
+          className="invisible ms-1 h-6 w-6 p-1 group-hover:visible"
           onClick={() => setIsEditing(true)}
         >
           <PencilSquareIcon className="h-4 w-4" />
@@ -133,7 +137,7 @@ function PlayerNameCell({ player }: { player?: Player }) {
   }
 
   return (
-    <TableCell className="col-span-2 row-start-1 block xl:table-cell">
+    <TableCell className="col-start-1 col-end-3 row-start-1 block sm:col-end-5 2xl:table-cell">
       <div className="group flex w-full flex-row items-center">{content}</div>
     </TableCell>
   );
